@@ -328,6 +328,22 @@
   <div class="grid">
     <div class="card">
       <h2>Controls</h2>
+
+      <div style="padding:12px 14px 0;">
+        <div class="sub" style="margin-bottom:6px;">Dataset</div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <label style="display:flex; gap:6px; align-items:center; cursor:pointer;">
+            <input type="radio" name="dataset" id="dsTv" checked />
+            <span>TV Series</span>
+          </label>
+          <label style="display:flex; gap:6px; align-items:center; cursor:pointer;">
+            <input type="radio" name="dataset" id="dsMovies" />
+            <span>Movies</span>
+          </label>
+          <span class="pill" id="dsLabel">TV Series</span>
+        </div>
+      </div>
+
       <div class="controls">
         <div class="control" style="grid-column:1/-1">
           <label>Load CSV (tvseries_ratings.csv)</label>
@@ -443,6 +459,29 @@
   const root = document.documentElement;
 
   const els = {
+    file: $("file"),
+    q: $("q"),
+    genre: $("genre"),
+    minRating: $("minRating"),
+    minVotes: $("minVotes"),
+    yearFrom: $("yearFrom"),
+    yearTo: $("yearTo"),
+    sort: $("sort"),
+    dir: $("dir"),
+    reset: $("reset"),
+    status: $("status"),
+    warn: $("warn"),
+    body: $("body"),
+    tbl: $("tbl"),
+    splitter: $("splitter"),
+
+    // dataset toggle
+    dsTv: $("dsTv"),
+    dsMovies: $("dsMovies"),
+    dsLabel: $("dsLabel"),
+
+  };
+
     file: $("file"),
     q: $("q"),
     genre: $("genre"),
@@ -661,21 +700,26 @@ async function loadCsvText(text){
     numVotes: cols[idx.numVotes],
   }));
 
-  els.status.textContent = `Loaded ${all.length.toLocaleString()} rows`;
+els.status.textContent = `Loaded ${all.length.toLocaleString()} rows`;
+  if (els.dsLabel) els.dsLabel.textContent = (els.dsMovies && els.dsMovies.checked) ? "Movies" : "TV Series";
   applyFilters();
+
 }
 
 // Auto-load when running on localhost
-(async () => {
+async function autoLoadDataset(){
+
   try{
-    const res = await fetch("tvseries_ratings.csv", { cache: "no-store" });
+    const res = await fetch((els.dsMovies && els.dsMovies.checked) ? "movies_ratings.csv" : "tvseries_ratings.csv", { cache: "no-store" });
+
     if (!res.ok) throw new Error("CSV not found");
     const text = await res.text();
     await loadCsvText(text);
   }catch{
     els.status.textContent = "CSV not auto-loaded (use file picker)";
   }
-})();
+}
+
 
 // Manual fallback (still available)
 els.file.addEventListener("change", async (e) => {
@@ -761,6 +805,19 @@ els.file.addEventListener("change", async (e) => {
 
   // Initial render
   render([]);
+
+// Initial dataset auto-load
+autoLoadDataset();
+
+// Dataset toggle: reload CSV when switched
+if (els.dsTv) {
+  els.dsTv.addEventListener("change", () => { if (els.dsTv.checked) { resetFilters(); autoLoadDataset(); } });
+}
+if (els.dsMovies) {
+  els.dsMovies.addEventListener("change", () => { if (els.dsMovies.checked) { resetFilters(); autoLoadDataset(); } });
+}
+
+
 })();
 </script>
 </body>
