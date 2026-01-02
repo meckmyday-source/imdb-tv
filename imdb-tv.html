@@ -25,7 +25,7 @@
       --leftW: 460px;
 
       /* ===== Table column knobs (WIDTHS) ===== */
-      --col-title-w: 180px;
+      --col-title-w: 260px;
       --col-year-w: 90px;
       --col-age-w: 70px;
       --col-rating-w: 90px;
@@ -315,7 +315,46 @@
       .grid{grid-template-columns:1fr}
       .splitter{display:none}
     }
-  </style>
+  /* ===== Mobile improvements ===== */
+@media (max-width: 900px){
+  /* Stack layout instead of side-by-side */
+  .grid{
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Make controls less cramped */
+  .panel{
+    position: relative !important;
+    top: auto !important;
+    max-height: none !important;
+  }
+
+  /* Bigger touch targets */
+  input, select, button{
+    min-height: 40px;
+    font-size: 16px;
+  }
+
+  /* Let table scroll horizontally instead of squishing columns */
+  .tablewrap{
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  table{
+    min-width: 900px;  /* keep columns readable */
+  }
+
+  /* Slightly tighter row padding */
+  :root{
+    --th-pad-y: 10px;
+    --th-pad-x: 10px;
+    --td-pad-y: 8px;
+    --td-pad-x: 10px;
+  }
+}
+
+</style>
+
 </head>
 
 <body>
