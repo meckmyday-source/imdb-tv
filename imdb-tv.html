@@ -708,22 +708,21 @@ els.status.textContent = `Loaded ${all.length.toLocaleString()} rows`;
 
 // Auto-load when running on localhost
 async function autoLoadDataset(){
-
   try{
-    const res = await fetch((els.dsMovies && els.dsMovies.checked) ? "movies_ratings.csv" : "tvseries_ratings.csv", { cache: "no-store" });
-
-    if (!res.ok) throw new Error("CSV not found");
+    const csv = (els.dsMovies && els.dsMovies.checked) ? "movies_ratings.csv" : "tvseries_ratings.csv";
+    const res = await fetch(csv, { cache: "no-store" });
+    if (!res.ok) throw new Error("CSV not found: " + csv);
     const text = await res.text();
     await loadCsvText(text);
-    }catch(err){
+
+    // update dataset pill on success
+    if (els.dsLabel) els.dsLabel.textContent = (els.dsMovies && els.dsMovies.checked) ? "Movies" : "TV Series";
+  }catch(err){
     const msg = (err && err.message) ? err.message : String(err);
     els.status.textContent = "Auto-load failed: " + msg;
     try { showWarn("Auto-load failed: " + msg); } catch {}
-    setDatasetLabel();
   }
-
-
-
+}
 // Manual fallback (still available)
 els.file.addEventListener("change", async (e) => {
   const f = e.target.files?.[0];
