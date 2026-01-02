@@ -226,7 +226,13 @@
     }
 
     /* ===== Table ===== */
-    .tablewrap{ padding:0; }
+    .tablewrap{
+      padding:0;
+      overflow: auto;                 /* allows vertical scrolling when needed */
+      max-height: calc(100vh - 210px);/* keeps table visible below header on small screens */
+      -webkit-overflow-scrolling: touch;
+    }
+
 
     table{
 
@@ -336,10 +342,7 @@
   }
 
   /* Let table scroll horizontally instead of squishing columns */
-  .tablewrap{
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-  }
+  overflow-x: auto !important;
   table{
     min-width: 900px;  /* keep columns readable */
   }
