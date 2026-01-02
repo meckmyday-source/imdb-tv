@@ -288,7 +288,7 @@
       flex-direction:column;
       gap:2px;
       min-width:0;
-      overflow:hidden;
+      overflow-wrap: break-word;
     }
     .titlecell a{
       color:var(--text);
@@ -296,7 +296,7 @@
       font-weight:700;
       font-size: var(--title-font-size);
       line-height:1.25;
-      white-space:nowrap;
+      white-space:wrap;
       overflow:hidden;
       text-overflow:ellipsis;
     }
@@ -322,6 +322,59 @@
       .splitter{display:none}
     }
   /* ===== Mobile improvements ===== */
+
+/* Toggle row: desktop/tablet */
+.dsWrap{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.dsPill{
+  margin-left:auto;
+}
+
+/* Mobile */
+@media (max-width: 900px){
+  /* Force single-column layout so Results isn't off-screen */
+  body{ overflow-x:hidden; }
+  .grid{
+    display:block !important;            /* stronger than grid-template tweaks */
+  }
+  .splitter{ display:none !important; }
+
+  /* Ensure panels take full width */
+  .grid > *{
+    width:100% !important;
+    min-width:0 !important;
+  }
+
+  /* Make dataset toggle not overlap */
+  .dsWrap{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
+  .dsPill{
+    margin-left:0;
+  }
+
+  /* Keep table readable with horizontal scroll */
+  .tablewrap{
+    overflow:auto !important;
+    max-height: none !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  table{
+    min-width: 900px;
+  }
+
+  input, select, button{
+    min-height: 40px;
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 900px){
   /* Stack layout instead of side-by-side */
   .grid{
@@ -373,7 +426,8 @@
 
       <div style="padding:12px 14px 0;">
         <div class="sub" style="margin-bottom:6px;">Dataset</div>
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <div class="dsWrap">
+
           <label style="display:flex; gap:6px; align-items:center; cursor:pointer;">
             <input type="radio" name="dataset" id="dsTv" checked />
             <span>TV Series</span>
@@ -382,7 +436,8 @@
             <input type="radio" name="dataset" id="dsMovies" />
             <span>Movies</span>
           </label>
-          <span class="pill" id="dsLabel">TV Series</span>
+          <span class="pill dsPill" id="dsLabel">TV Series</span>
+
         </div>
       </div>
 
