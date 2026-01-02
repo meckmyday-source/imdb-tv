@@ -27,38 +27,38 @@
       --leftW: 460px;
 
       /* ===== Table column knobs (WIDTHS) ===== */
-      --col-title-w: 260px;
-      --col-year-w: 90px;
-      --col-age-w: 70px;
-      --col-rating-w: 90px;
-      --col-votes-w: 130px;
-      --col-genres-w: 200px;
-      --col-score-w: 110px;
+      --col-title-w: 180px;
+      --col-year-w: 80px;
+      --col-age-w: 80px;
+      --col-rating-w: 80px;
+      --col-votes-w: 100px;
+      --col-genres-w: 160px;
+      --col-score-w: 180px;
 
       /* ===== Table column knobs (ALIGNMENT) ===== */
       --col-title-align: left;
-      --col-year-align: right;
-      --col-age-align: right;
-      --col-rating-align: right;
-      --col-votes-align: right;
+      --col-year-align: center;
+      --col-age-align: center;
+      --col-rating-align: center;
+      --col-votes-align: center;
       --col-genres-align: left;
-      --col-score-align: right;
+      --col-score-align: center;
 
       /* ===== Table spacing & typography knobs ===== */
 
       /* Header cell padding */
-      --th-pad-y: 1px;
-      --th-pad-x: 1px;
+      --th-pad-y: 2px;
+      --th-pad-x: 2px;
 
       /* Body cell padding */
-      --td-pad-y: 1px;
-      --td-pad-x: 1px;
+      --td-pad-y: 2px;
+      --td-pad-x: 2px;
 
       /* Font sizes */
-      --th-font-size: 12px;
-      --td-font-size: 12px;
+      --th-font-size: 13px;
+      --td-font-size: 13px;
 
-      --title-font-size: 12px;
+      --title-font-size: 13px;
       --meta-font-size: 10px;
 
     }
@@ -236,11 +236,16 @@
     }
 
 
-    table{
-      width:100%;
+          table{
+      width: calc(
+        var(--col-title-w) + var(--col-year-w) + var(--col-age-w) +
+        var(--col-rating-w) + var(--col-votes-w) + var(--col-genres-w) +
+        var(--col-score-w)
+      );
       border-collapse:collapse;
-      table-layout:fixed;
+      table-layout: fixed;   /* lock column widths */
     }
+
 
 
     thead th{
@@ -298,9 +303,9 @@
       overflow-wrap: break-word;
     }
     .titlecell a{
-      color:var(--text);
+      color: #F5DA55;
       text-decoration:none;
-      font-weight:700;
+      font-weight:400;
       font-size: var(--title-font-size);
       line-height:1.25;
       white-space:wrap;
@@ -323,6 +328,15 @@
     #tbl th:nth-child(5), #tbl td:nth-child(5){ text-align: var(--col-votes-align); }
     #tbl th:nth-child(6), #tbl td:nth-child(6){ text-align: var(--col-genres-align); }
     #tbl th:nth-child(7), #tbl td:nth-child(7){ text-align: var(--col-score-align); }
+/* ===== Header alignment mirrors column knobs ===== */
+th:nth-child(1){ text-align: var(--col-title-align); }
+th:nth-child(2){ text-align: var(--col-year-align); }
+th:nth-child(3){ text-align: var(--col-age-align); }
+th:nth-child(4){ text-align: var(--col-rating-align); }
+th:nth-child(5){ text-align: var(--col-votes-align); }
+th:nth-child(6){ text-align: var(--col-genres-align); }
+th:nth-child(7){ text-align: var(--col-score-align); }
+
 
     @media (max-width: 980px){
       .grid{grid-template-columns:1fr}
